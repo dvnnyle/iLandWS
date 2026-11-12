@@ -235,6 +235,33 @@ h2 .soft{color:var(--muted)}
 .look.tomato .lk-tray{background:rgba(0,0,0,.14);border-color:rgba(255,255,255,.16)}
 .wave-w i{background:#fff!important}
 
+
+/* New in 1.1 */
+.new-card{padding:0 0 24px}
+.new-card h3,.new-card p{padding:0 26px}
+.new-card h3{margin-top:20px}
+.mini{height:170px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;background:radial-gradient(90% 120% at 50% 0%,#151823,#07080c)}
+.mini-screen{position:absolute;inset:22px 34px;border-radius:12px;background:linear-gradient(160deg,#141a2c,#0a0b12);overflow:hidden}
+.mini-screen .glow{position:absolute;inset:-60%;background:conic-gradient(#ff3b30,#ff9500,#ffd60a,#34c759,#32ade6,#5e5ce6,#bf5af2,#ff2d92,#ff3b30);animation:spinglow 9s linear infinite}
+.mini-screen .inner{position:absolute;inset:14px;border-radius:10px;background:#0b0d16;filter:blur(9px);animation:breathe 1.4s ease-in-out infinite}
+@keyframes breathe{50%{inset:20px}}
+@keyframes spinglow{to{transform:rotate(360deg)}}
+.mini-isl{position:absolute;left:50%;top:0;transform:translateX(-50%);width:210px;height:86px;border-radius:0 0 24px 24px;background:#000;display:flex;align-items:center;justify-content:center;gap:12px;padding-top:18px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.mini-isl i{width:30px;height:36px;border-radius:5px;background:linear-gradient(#f2f2f7,#c7c7cc);position:relative}
+.mini-isl i:nth-child(2){background:linear-gradient(#5ac8fa,#1e6cf0)}
+.mini-isl i:nth-child(3){background:linear-gradient(#ff7a59,#d61a19)}
+.mini-isl b{font-size:13px;color:#8e8e93}
+.cursor-doc{position:absolute;left:58%;top:110px;width:26px;height:32px;border-radius:4px;background:linear-gradient(#ffd76a,#ff9f1a);box-shadow:0 8px 18px rgba(0,0,0,.5);animation:dragup 2.4s ease-in-out infinite}
+@keyframes dragup{0%{transform:translate(0,0);opacity:0}15%{opacity:1}70%{transform:translate(-20px,-70px);opacity:1}100%{transform:translate(-20px,-70px);opacity:0}}
+.mini-win{position:absolute;inset:24px 40px;border-radius:12px;background:#1c1c1e;display:flex;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.mini-win .side{width:32%;background:#141416;padding:14px 8px;display:grid;gap:7px;align-content:start}
+.mini-win .side i{height:12px;border-radius:4px;background:#2c2c2e}
+.mini-win .side i.on{background:#3a3a3c}
+.mini-win .main{flex:1;padding:14px;display:grid;gap:8px;align-content:start}
+.mini-win .main b{height:12px;width:50%;border-radius:4px;background:#3a3a3c}
+.mini-win .main u{height:22px;border-radius:7px;background:#2c2c2e;position:relative}
+.mini-win .main u::after{content:"";position:absolute;right:7px;top:5px;width:22px;height:12px;border-radius:7px;background:linear-gradient(135deg,#F12E29,#C81313)}
+
 /* feature split */
 .split{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
 .split.rev{grid-template-columns:1fr 1.05fr}
@@ -320,6 +347,7 @@ footer a:hover{color:var(--fg)}
   <div class="wrap">
     <a href="#" class="logo"><svg class="mark" width="26" height="26"><use href="#logo"/></svg><span>i<b>Land</b></span></a>
     <ul>
+      <li><a href="#new">New</a></li>
       <li><a href="#music">Music</a></li>
       <li><a href="#weather">Weather</a></li>
       <li><a href="#faceid">Face ID</a></li>
@@ -338,7 +366,7 @@ footer a:hover{color:var(--fg)}
       <a class="btn tomato" href="downloads/iLand.dmg" download><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>Download for Mac</a>
       <a class="btn ghost" href="#music">See what it does</a>
     </div>
-    <p class="fine">Free · Version 1.0.0 · macOS 13 or later · 1.4 MB</p>
+    <p class="fine">Free · Version 1.1.0 · macOS 13 or later · 1.6 MB</p>
 
     <div class="mac" id="mac" aria-label="iLand running on a MacBook">
       <div class="lid">
@@ -588,6 +616,32 @@ footer a:hover{color:var(--fg)}
   </div>
 </section>
 
+<section id="new">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>New in 1.1.<br><span class="soft">Light, files and settings.</span></h2>
+      <p class="sub">Three things that make the notch part of everything you do.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card new-card reveal">
+        <div class="mini ambient"><div class="mini-screen"><span class="glow"></span><span class="inner"></span></div></div>
+        <h3>Ambient Light</h3>
+        <p>Soft rainbow waves along your screen edges that bounce with the beat. Or a halo around the island. Runs on the graphics chip, so it stays light.</p>
+      </div>
+      <div class="card new-card reveal">
+        <div class="mini shelf"><div class="mini-isl"><i></i><i></i><i></i><b>+2</b></div><span class="cursor-doc"></span></div>
+        <h3>File Shelf</h3>
+        <p>Drag files onto the notch to park them. Drag them out into any app later, or AirDrop them all at once.</p>
+      </div>
+      <div class="card new-card reveal">
+        <div class="mini settings"><div class="mini-win"><div class="side"><i></i><i class="on"></i><i></i><i></i></div><div class="main"><b></b><u></u><u></u><u></u></div></div></div>
+        <h3>Settings</h3>
+        <p>One place for styles, music, weather units, the shelf, the lock screen and Face ID, including how strict it is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="looks">
   <div class="wrap">
     <div class="reveal">
@@ -630,7 +684,7 @@ footer a:hover{color:var(--fg)}
     <div class="reveal" style="text-align:center">
       <svg width="96" height="96" style="filter:drop-shadow(0 18px 40px rgba(214,26,25,.35))"><use href="#logo"/></svg>
       <h2 style="margin-top:22px">Get iLand.</h2>
-      <p class="sub" style="margin:16px auto 0">Free for your Mac. Version 1.0.0, about 1.4 MB.</p>
+      <p class="sub" style="margin:16px auto 0">Free for your Mac. Version 1.1.0, about 1.6 MB.</p>
       <div style="margin-top:28px"><a class="btn tomato big" href="downloads/iLand.dmg" download><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>Download for Mac</a></div>
       <p class="fine">Requires macOS 13 or later. Liquid Glass needs macOS 26.</p>
     </div>
@@ -641,15 +695,15 @@ footer a:hover{color:var(--fg)}
     </div>
     <div class="grid g2">
       <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div><h3>Private</h3><p>No accounts, analytics or servers of its own. Face data and your password never leave your Mac.</p></div>
-      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div><h3>Light</h3><p>A native Swift app, about 1.4 MB. Sits in the notch, nowhere else: no Dock icon, no menu bar clutter.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div><h3>Light</h3><p>A native Swift app, about 1.6 MB. Sits in the notch, nowhere else: no Dock icon, no menu bar clutter.</p></div>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="foot-l"><span class="logo"><svg class="mark" width="20" height="20"><use href="#logo"/></svg><span>i<b>Land</b></span></span><span class="sep"></span><span>made by <a href="https://dvnny.no" style="color:var(--fg)">dvnny.no</a></span></div>
-    <div><a href="downloads/iLand.dmg" download>Download iLand 1.0.0</a></div>
+    <div class="foot-l"><span class="logo"><svg class="mark" width="20" height="20"><use href="#logo"/></svg><span>i<b>Land</b></span></span><span class="sep"></span><span>made by <a href="https://dvnny.no" style="color:var(--fg)">dvnny.no</a></span><span class="sep"></span><span>Weather data by <a href="https://open-meteo.com">Open-Meteo.com</a></span></div>
+    <div><a href="downloads/iLand.dmg" download>Download iLand 1.1.0</a></div>
   </div>
 </footer>
 

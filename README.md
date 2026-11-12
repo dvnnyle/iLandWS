@@ -4,6 +4,6 @@ The website for **iLand**, a notch island for your Mac: music, weather and a Fac
 
 **Live:** https://dvnnyle.github.io/iLandWS/
 
-**Download:** [iLand 1.0.0 for Mac](downloads/iLand.dmg) (macOS 13 or later)
+**Download:** [iLand 1.1.0 for Mac](downloads/iLand.dmg) (macOS 13 or later, notarized by Apple)
 
-Made by [dvnny.no](https://dvnny.no). All rights reserved © dvnnyle.
+Made by [dvnny.no](https://dvnny.no). Weather data by [Open-Meteo.com](https://open-meteo.com). All rights reserved © dvnnyle.
