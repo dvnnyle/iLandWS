@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iLand — your notch, finally doing something</title>
+<meta name="description" content="iLand turns the MacBook notch into a living island: music, weather, battery and Face ID-style unlock. Pitch black or Liquid Glass.">
+<meta property="og:title" content="iLand">
+<meta property="og:description" content="Your Mac's notch, finally doing something. Free download for macOS.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22lg1%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23F12E29%22/%3E%3Cstop%20offset%3D%22.45%22%20stop-color%3D%22%23D61A19%22/%3E%3Cstop%20offset%3D%22.7%22%20stop-color%3D%22%23C81313%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239C0708%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222.5%22%20fill%3D%22url%28%23lg1%29%22/%3E%3Cpath%20d%3D%22M21.4%2043.6%2031%2040.8q.6-.2%201.2-.2H68q.6%200%201.2.2l9.8%202.8q1.8.6%201.8%202.2%200%201.9-2.2%201.9H21.4q-2.2%200-2.2-1.9%200-1.6%202.2-2.2z%22%20fill%3D%22%23fff%22/%3E%3Cpath%20d%3D%22M42.2%2040.6V33.2q0-4.2%204.2-4.2%204.2%200%204.2%204%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M23.4%2049.7h20.8v17.9q0%203.5-3.5%203.5H27q-3.4%200-3.4-3.5z%22%20fill%3D%22%23fff%22/%3E%3Cg%20fill%3D%22%23fff%22%3E%3Crect%20x%3D%2247.5%22%20y%3D%2252%22%20width%3D%2213.2%22%20height%3D%225%22%20rx%3D%222.5%22/%3E%3Crect%20x%3D%2263.1%22%20y%3D%2252%22%20width%3D%2213.2%22%20height%3D%225%22%20rx%3D%222.5%22/%3E%3C/g%3E%3Cg%20stroke%3D%22%23fff%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M49.7%2057%2047.8%2070.4M58.5%2057l1.9%2013.4M65.3%2057l-1.9%2013.4M74.1%2057l1.9%2013.4%22/%3E%3Cpath%20d%3D%22M50.6%2065.8h7.1M66.2%2065.8h7.1%22%20stroke-width%3D%222.1%22/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#000;--fg:#f5f5f7;--muted:#8e8e93;--faint:#2a2a2d;--card:#0c0c0e;--line:#1c1c1f;
+  --green:#5be38a;--blue:#7da8ff;--red:#ff5c4d;--yellow:#fac254;
+  --radius:28px;--max:1080px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:300;letter-spacing:.02em;font-size:20px}
+.logo b{font-weight:600}
+nav ul{display:flex;gap:26px;list-style:none;font-size:14px;color:var(--muted)}
+nav ul a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 22px;border-radius:999px;font-weight:600;font-size:15px;transition:transform .15s ease,opacity .15s}
+.btn:active{transform:scale(.96)}
+.btn.light{background:#ebebeb;color:#000}
+.btn.tomato{background:linear-gradient(135deg,#F12E29 0%,#D61A19 45%,#C81313 70%,#9C0708 100%);color:#fff;box-shadow:0 10px 28px rgba(214,26,25,.32),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn.tomato:hover{box-shadow:0 12px 34px rgba(214,26,25,.45),inset 0 1px 0 rgba(255,255,255,.22)}
+.logo{display:inline-flex;align-items:center;gap:10px}
+.logo .mark{border-radius:6px;flex:none}
+::selection{background:#D61A19;color:#fff}
+.btn.ghost{border:1px solid #333;color:var(--fg)}
+.btn.small{height:34px;padding:0 16px;font-size:13px}
+
+/* hero */
+.hero{padding:84px 0 40px;text-align:center}
+.hero h1{font-size:clamp(44px,7.4vw,92px);line-height:1.02;letter-spacing:-.035em;font-weight:700}
+.hero h1 .thin{font-weight:200;letter-spacing:-.02em}
+.hero p.lead{margin:22px auto 0;max-width:600px;color:var(--muted);font-size:clamp(17px,2.2vw,21px)}
+.hero .ctas{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- realistic MacBook hero ---------- */
+.mac{margin:68px auto 0;max-width:1060px;position:relative;filter:drop-shadow(0 50px 90px rgba(70,100,220,.18))}
+.lid{background:#0a0a0b;border-radius:22px 22px 10px 10px;padding:1.15% 1.15% 1.6%;
+  box-shadow:0 0 0 1.5px #2b3240,0 0 0 3px #1a1f29,inset 0 0 0 1px #1d1d20}
+.viewport{position:relative;overflow:hidden;border-radius:12px 12px 4px 4px;background:#000}
+.display{position:absolute;left:0;top:0;width:1470px;height:956px;transform-origin:0 0;font-family:var(--font);color:#fff;overflow:hidden}
+.wall{position:absolute;inset:0;width:100%;height:100%}
+.base{position:relative;height:0;padding-bottom:2.1%;margin:0 -5.5%;border-radius:2px 2px 26px 26px / 2px 2px 14px 14px;
+  background:linear-gradient(180deg,#4a5466 0%,#2e3644 32%,#1d232e 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 18px 30px rgba(0,0,0,.5)}
+.base span{position:absolute;left:50%;top:0;width:13%;height:42%;transform:translateX(-50%);border-radius:0 0 12px 12px;background:linear-gradient(180deg,#161b23,#2a313d)}
+
+/* menu bar */
+.mb{position:absolute;inset:0 0 auto 0;height:33px;display:flex;justify-content:space-between;align-items:center;padding:0 16px 0 20px;
+  background:rgba(14,18,30,.28);backdrop-filter:blur(30px) saturate(160%);-webkit-backdrop-filter:blur(30px) saturate(160%);font-size:13.5px;letter-spacing:-.01em;z-index:2}
+.mb-l{display:flex;gap:20px;align-items:center}.mb-l b{font-weight:700}
+.mb-r{display:flex;gap:17px;align-items:center;color:#fff}
+.mb-bat{position:relative;width:27px;height:13px;border-radius:4px;background:rgba(255,255,255,.95);display:grid;place-items:center}
+.mb-bat::after{content:"";position:absolute;right:-3px;top:4px;width:2px;height:5px;border-radius:0 2px 2px 0;background:rgba(255,255,255,.55)}
+.mb-bat-num{font-size:9.5px;font-weight:800;color:#000;letter-spacing:-.02em}
+.mb-date{font-variant-numeric:tabular-nums;white-space:pre}
+
+/* dock */
+.dock{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:24px;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(30px) saturate(170%);-webkit-backdrop-filter:blur(30px) saturate(170%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);z-index:2}
+.dock i{display:grid;place-items:center;width:54px;height:54px;border-radius:13px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.dock b{width:1px;height:46px;background:rgba(255,255,255,.25);margin:0 3px}
+.dock s{display:block;text-decoration:none}
+.g-face{width:26px;height:20px;border:3px solid #fff;border-radius:6px}
+.g-compass{width:30px;height:30px;border-radius:50%;border:3px solid #1e6cf0;position:relative}
+.g-compass::after{content:"";position:absolute;left:11px;top:3px;width:3px;height:19px;background:linear-gradient(#ff3b30 50%,#8e8e93 50%);transform:rotate(40deg);border-radius:2px}
+.g-bubble{width:30px;height:24px;border-radius:50%;background:#fff}
+.g-note{width:24px;height:28px;border-radius:4px;background:#fff;box-shadow:inset 0 -18px 0 -14px #ffcf4a}
+.g-music{width:16px;height:22px;border-right:4px solid #fff;border-top:4px solid #fff;border-radius:0 3px 0 0;position:relative}
+.g-music::before{content:"";position:absolute;left:-2px;bottom:-4px;width:12px;height:10px;border-radius:50%;background:#fff}
+.g-gear{width:28px;height:28px;border-radius:50%;border:6px dotted #e5e5ea}
+.g-iland{width:30px;height:11px;border-radius:6px;background:#fff}
+.g-bin{width:22px;height:26px;border-radius:2px 2px 6px 6px;background:rgba(255,255,255,.7)}
+
+/* lock screen */
+.lock{position:absolute;inset:0;z-index:3;opacity:0;pointer-events:none;transition:opacity .6s ease;
+  background:rgba(4,6,14,.38);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);text-align:center}
+.lock.on{opacity:1}
+.lock-date{margin-top:118px;font-size:22px;font-weight:600;opacity:.85}
+.lock-time{font-size:132px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-top:2px;opacity:.95;font-variant-numeric:tabular-nums}
+.lock-user{position:absolute;left:0;right:0;bottom:118px;display:flex;flex-direction:column;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(140deg,#9db4ff,#5b6cd9);box-shadow:0 0 0 2px rgba(255,255,255,.3)}
+.pw{margin-top:4px;padding:7px 22px;border-radius:999px;background:rgba(255,255,255,.18);font-weight:500;font-size:13px;color:rgba(255,255,255,.7)}
+
+/* island (native screen points) */
+.isl{position:absolute;left:50%;top:0;transform:translateX(-50%);width:196px;height:32px;border-radius:0 0 11px 11px;z-index:5;
+  --e:6px;transition:width .6s cubic-bezier(.28,1.35,.42,1),height .6s cubic-bezier(.28,1.35,.42,1),border-radius .5s ease,box-shadow .4s ease}
+.isl.open{box-shadow:0 10px 22px rgba(0,0,0,.45)}
+.isl .clip{position:absolute;inset:0;border-radius:inherit;background:#000;overflow:hidden}
+.isl .ear{position:absolute;top:0;width:var(--e);height:var(--e)}
+.isl .ear.l{left:calc(-1 * var(--e));background:radial-gradient(circle at 0 100%,transparent calc(var(--e) - .6px),#000 var(--e))}
+.isl .ear.r{right:calc(-1 * var(--e));background:radial-gradient(circle at 100% 100%,transparent calc(var(--e) - .6px),#000 var(--e))}
+.isl .layer{position:absolute;inset:0;opacity:0;filter:blur(7px);transform:scale(.95);transform-origin:top center;transition:opacity .38s ease,filter .38s ease,transform .38s ease}
+.isl .layer.on{opacity:1;filter:none;transform:none}
+.isl .wings{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+/* open panel = 32pt header strip + body, tray 6pt from the sides and bottom (as in the app) */
+.isl .panel,.isl .wx{position:absolute;inset:0;display:flex;flex-direction:column;padding:32px 0 6px}
+.isl .panel .row{margin:2px 22px 0}
+.isl .panel .prog{margin:14px 22px 0;font-size:12px}
+.isl .panel .tray{margin:auto 6px 0;height:54px;border-radius:24px;justify-content:space-around;padding:0 10px}
+.isl .wx .top{padding:2px 22px 0}
+.isl .wx .city{font-size:14px}.isl .wx .temp{font-size:50px;margin-top:-4px}.isl .wx .uv{font-size:12px}
+.isl .wx .hours{margin:auto 6px 0;height:76px;border-radius:24px;padding:0 8px}
+.isl .hdr{position:absolute;top:0;right:22px;height:32px;display:flex;align-items:center;gap:10px;opacity:.9;z-index:1}
+.pdots{display:flex;gap:4px;align-items:center}.pdots i{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.28)}.pdots i.on{width:12px;background:rgba(255,255,255,.95)}
+.hb{font-size:11px;font-weight:500;color:rgba(255,255,255,.5);font-variant-numeric:tabular-nums}
+.hbat{position:relative;width:22px;height:11px;border:1px solid rgba(255,255,255,.5);border-radius:3px}
+.hbat::before{content:"";position:absolute;left:2px;top:2px;bottom:2px;width:11px;border-radius:1.5px;background:rgba(255,255,255,.95)}
+.hbat::after{content:"";position:absolute;right:-3px;top:3px;width:1.5px;height:4px;border-radius:1px;background:rgba(255,255,255,.5)}
+.cam{position:absolute;left:50%;top:11px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;z-index:6;
+  background:radial-gradient(circle at 35% 35%,#2b3550 0%,#11141c 45%,#050507 70%);box-shadow:0 0 0 1px #0e0f12}
+.hours svg{display:block;margin:5px auto}
+
+/* album art: original illustrated cover */
+.art-a{background:
+  radial-gradient(circle at 68% 34%,#ffe2a1 0 13%,transparent 14%),
+  radial-gradient(120% 60% at 50% 100%,#2b1450 0 38%,transparent 39%),
+  radial-gradient(140% 60% at 15% 100%,#4a1f7a 0 44%,transparent 45%),
+  linear-gradient(180deg,#ff8f6b 0%,#e8508f 45%,#7b3bd6 75%,#2b1f6e 100%);position:relative;overflow:hidden;flex:none}
+.art-a::after{content:"";position:absolute;inset:0;opacity:.22;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* pointer + swipe hint */
+.cursor{position:absolute;left:1080px;top:560px;z-index:7;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));
+  transition:left .95s cubic-bezier(.45,.05,.25,1),top .95s cubic-bezier(.45,.05,.25,1),opacity .3s}
+.cursor.hide{opacity:0}
+.fingers{position:absolute;left:830px;top:120px;z-index:7;display:flex;gap:14px;opacity:0;pointer-events:none}
+.fingers i{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 0 1px rgba(255,255,255,.7),0 4px 14px rgba(0,0,0,.35)}
+.fingers.go{animation:swipe 1.05s cubic-bezier(.45,0,.3,1) forwards}
+@keyframes swipe{0%{opacity:0;transform:translateX(0)}18%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateX(-200px)}}
+
+.hero-cap{margin:30px auto 0;display:flex;flex-direction:column;align-items:center;gap:14px;min-height:64px}
+.hero-cap #cap{font-size:15px;color:#c7c7cc;transition:opacity .25s}
+.steps{display:flex;gap:6px}
+.steps i{width:6px;height:6px;border-radius:9px;background:#3a3a3e;transition:width .3s,background .3s}
+.steps i.on{width:20px;background:linear-gradient(90deg,#F12E29,#C81313)}
+
+/* compact wings */
+.wings{display:flex;justify-content:space-between;align-items:center;height:34px;padding:0 10px}
+.art{border-radius:6px;background:linear-gradient(135deg,#ff8a5c,#9b4dff 60%,#3b7bff)}
+.wave{display:flex;gap:2.5px;align-items:center;height:14px}
+.wave i{display:block;width:3px;border-radius:2px;background:#ff9bd0;animation:wv 1s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:-.3s}.wave i:nth-child(3){animation-delay:-.6s}.wave i:nth-child(4){animation-delay:-.15s}
+@keyframes wv{0%,100%{height:30%}50%{height:100%}}
+
+/* music panel */
+.panel{padding:44px 20px 6px}
+.row{display:flex;align-items:center;gap:13px}
+.t1{font-weight:600;font-size:15px}.t2{color:var(--muted);font-size:13.5px}
+.prog{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11.5px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.bar{flex:1;height:6px;border-radius:9px;background:rgba(255,255,255,.16);overflow:hidden}
+.bar span{display:block;height:100%;width:38%;background:rgba(255,255,255,.55);border-radius:9px;animation:pg 9s linear infinite}
+@keyframes pg{from{width:20%}to{width:70%}}
+.tray{margin:14px 0 0;height:52px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-around;align-items:center}
+.tray svg{fill:#fff}.tray .dim{fill:var(--muted);stroke:var(--muted)}
+
+/* weather panel */
+.wx{padding:44px 22px 6px}
+.wx .top{display:flex;justify-content:space-between}
+.wx .city{font-weight:700;font-size:13.5px}
+.wx .temp{font-size:46px;font-weight:200;line-height:1}
+.wx .uv{font-size:11.5px;font-weight:700;color:var(--muted);text-align:right;margin-top:6px}
+.hours{margin-top:12px;height:74px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);display:grid;grid-template-columns:repeat(6,1fr);align-items:center;text-align:center;font-size:12px}
+.hours b{display:block;font-size:12.5px}.hours small{color:var(--muted);font-weight:600;font-size:11px}
+
+/* face id */
+.faceid{display:grid;place-items:center;padding-top:30px}
+svg.glyph{overflow:visible}
+.glyph .corners,.glyph .face{fill:none;stroke:#fff;stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+.glyph .corners{transform-origin:32px 32px;animation:breathe 1.6s ease-in-out infinite}
+.glyph .face{animation:pulse 1.6s ease-in-out infinite}
+.glyph .beam{animation:beam 1.1s linear infinite}
+@keyframes breathe{50%{transform:scale(.94)}}
+@keyframes pulse{50%{opacity:.55}}
+@keyframes beam{from{transform:translateY(0)}to{transform:translateY(56px)}}
+.glyph.ok .corners,.glyph.ok .face,.glyph.ok .beam{opacity:0;transition:opacity .35s}
+.glyph .ring,.glyph .check{fill:none;stroke:var(--green);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.glyph .ring{stroke-dasharray:180;stroke-dashoffset:180}
+.glyph .check{stroke-dasharray:60;stroke-dashoffset:60}
+.glyph.ok .ring{opacity:1;stroke-dashoffset:0;transition:stroke-dashoffset .5s ease .05s,opacity .1s}
+.glyph.ok .check{opacity:1;stroke-dashoffset:0;transition:stroke-dashoffset .35s ease .35s,opacity .1s .3s}
+
+/* sections */
+section{padding:110px 0}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(135deg,#F12E29,#D61A19 55%,#C81313);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(34px,5vw,56px);line-height:1.05;letter-spacing:-.03em;font-weight:700}
+h2 .soft{color:var(--muted)}
+.sub{color:var(--muted);font-size:clamp(16px,2vw,19px);max-width:620px;margin-top:16px}
+
+.grid{display:grid;gap:18px;margin-top:48px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden}
+.card h3{font-size:20px;letter-spacing:-.01em;margin-top:14px}
+.card p{color:var(--muted);font-size:15px;margin-top:8px}
+.ico{width:40px;height:40px;border-radius:12px;background:#151518;display:grid;place-items:center}
+.ico svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* section stages: a close-up of the top of the screen */
+.stage{background:radial-gradient(90% 120% at 15% 110%,#1d3a7a 0%,transparent 60%),radial-gradient(80% 110% at 95% 100%,#5b2f7a 0%,transparent 60%),linear-gradient(180deg,#121624,#07080d)!important}
+.stage-mb{position:absolute;inset:0 0 auto 0;height:32px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;font-size:12.5px;color:rgba(255,255,255,.75);background:rgba(255,255,255,.05);backdrop-filter:blur(20px)}
+.stage-mb b{font-weight:700;margin-right:12px}
+.stage .isl{top:0}
+.stage .isl .layer{transition:none}
+/* looks cards */
+.look .pic .island{position:absolute;left:50%;top:0;transform:translateX(-50%);background:#000}
+
+
+/* looks: a real mini island in each style */
+.look .pic .isl.lk{width:260px;height:142px;border-radius:0 0 28px 28px;--e:12px;box-shadow:0 14px 34px rgba(30,30,60,.28)}
+.lk-in{position:absolute;inset:0;padding:32px 16px 7px;display:flex;flex-direction:column}
+.lk-in .row{gap:11px}
+.lk-tray{margin:auto -9px 0;height:42px;border-radius:21px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-around;align-items:center;padding:0 30px}
+.lk-tray svg{fill:#fff}
+.look.glass .isl.lk .clip{background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.93) 40%,rgba(0,0,0,.08) 95%);backdrop-filter:blur(14px) saturate(170%);-webkit-backdrop-filter:blur(14px) saturate(170%);box-shadow:inset 0 -1px 0 rgba(255,255,255,.55),inset 0 0 0 1px rgba(255,255,255,.14)}
+.look.glass .lk-tray{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35)}
+.look.glass .lk-tray svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+.look.tomato .isl.lk .clip{background:linear-gradient(180deg,rgba(255,255,255,.1),transparent 50%),linear-gradient(135deg,#F12E29 0%,#D61A19 42%,#C81313 68%,#9C0708 100%)}
+.look.tomato .isl.lk .ear.l{background:radial-gradient(circle at 0 100%,transparent calc(var(--e) - .6px),#F12E29 var(--e))}
+.look.tomato .isl.lk .ear.r{background:radial-gradient(circle at 100% 100%,transparent calc(var(--e) - .6px),#E2231F var(--e))}
+.look.tomato .t2{color:rgba(255,255,255,.7)}
+.look.tomato .lk-tray{background:rgba(0,0,0,.14);border-color:rgba(255,255,255,.16)}
+.wave-w i{background:#fff!important}
+
+/* feature split */
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.split.rev{grid-template-columns:1fr 1.05fr}
+.split.rev .copy{order:2}
+.stage{background:radial-gradient(100% 120% at 50% 0%,#15171d 0%,#050506 70%);border:1px solid var(--line);border-radius:var(--radius);min-height:330px;position:relative;overflow:hidden}
+.stage .island{top:0}
+ul.ticks{list-style:none;margin-top:24px;display:grid;gap:12px}
+ul.ticks li{display:flex;gap:12px;color:#d6d6db;font-size:15.5px}
+ul.ticks li::before{content:"";flex:none;width:18px;height:18px;margin-top:3px;border-radius:50%;background:#1b1b1e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5 9.4l2.6 2.6L13 6.4' fill='none' stroke='%235be38a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+
+/* warning */
+.warn{margin-top:28px;display:flex;gap:14px;background:#141108;border:1px solid #3a2f12;border-radius:20px;padding:18px 20px}
+.warn svg{flex:none;width:24px;height:24px}
+.warn b{color:var(--yellow)}
+.warn p{color:#cdbf9a;font-size:14.5px}
+
+/* styles compare */
+.looks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.look{border-radius:var(--radius);border:1px solid var(--line);overflow:hidden}
+.look .pic{height:230px;position:relative;background:linear-gradient(135deg,#d9e4f5 0%,#b9c8e8 40%,#e9d6ef 100%)}
+.look .pic .island{width:240px;height:130px;border-radius:0 0 30px 30px}
+.look.tomato .pic .island{background:linear-gradient(135deg,#F12E29 0%,#D61A19 42%,#C81313 68%,#9C0708 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 18px 40px rgba(156,7,8,.35)}
+.look.glass .pic .island{background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.94) 42%,rgba(0,0,0,.05) 92%);backdrop-filter:blur(10px) saturate(160%);-webkit-backdrop-filter:blur(10px) saturate(160%);box-shadow:inset 0 -1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.12)}
+.look .meta{padding:22px 24px;background:var(--card)}
+.look .meta h3{font-size:19px}.look .meta p{color:var(--muted);font-size:14.5px;margin-top:4px}
+
+/* build */
+.term{background:#0a0a0b;border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-top:36px}
+.term .bar2{display:flex;gap:7px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.term .bar2 i{width:11px;height:11px;border-radius:50%;background:#2c2c30}
+.term pre{font-family:var(--mono);font-size:14px;line-height:1.75;padding:20px 22px;color:#d6d6db;overflow-x:auto}
+.term pre .c{color:#6b6b72}.term pre .p{color:var(--green)}
+.copy-btn{position:absolute;right:14px;top:8px}
+table{width:100%;border-collapse:collapse;margin-top:28px;font-size:15px}
+td{padding:14px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-family:var(--mono);font-size:14px;white-space:nowrap;padding-right:24px;color:#fff}
+td:last-child{color:var(--muted)}
+
+.fine{margin-top:16px;color:#6e6e73;font-size:13px}
+.btn.big{height:54px;padding:0 30px;font-size:17px}
+.install{margin-top:56px}
+.num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff;background:linear-gradient(135deg,#F12E29,#C81313)}
+.card p b{color:#e5e5ea;font-weight:600}
+footer{border-top:1px solid var(--line);padding:40px 0 60px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot-l{display:flex;align-items:center;gap:10px}
+.foot-l .logo{font-size:16px;color:var(--fg)}
+.foot-l .sep{width:3px;height:3px;border-radius:50%;background:#555}
+footer a:hover{color:var(--fg)}
+
+.nw{white-space:nowrap}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:860px){
+  nav ul{display:none}
+  .g3,.g2,.looks{grid-template-columns:1fr}
+  .split,.split.rev{grid-template-columns:1fr;gap:28px}
+  .split.rev .copy{order:0}
+  section{padding:80px 0}
+}
+@media (max-width:520px){
+  .nw{white-space:normal}
+  .stage .isl,.look .pic .isl{transform:translateX(-50%) scale(.8);transform-origin:top center}
+  .stage{min-height:270px}
+  .look .pic{height:190px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F12E29"/><stop offset=".45" stop-color="#D61A19"/><stop offset=".7" stop-color="#C81313"/><stop offset="1" stop-color="#9C0708"/></linearGradient></defs>
+  <symbol id="logo" viewBox="0 0 100 100"><rect width="100" height="100" rx="22.5" fill="url(#lg1)"/><path d="M21.4 43.6 31 40.8q.6-.2 1.2-.2H68q.6 0 1.2.2l9.8 2.8q1.8.6 1.8 2.2 0 1.9-2.2 1.9H21.4q-2.2 0-2.2-1.9 0-1.6 2.2-2.2z" fill="#fff"/><path d="M42.2 40.6V33.2q0-4.2 4.2-4.2 4.2 0 4.2 4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M23.4 49.7h20.8v17.9q0 3.5-3.5 3.5H27q-3.4 0-3.4-3.5z" fill="#fff"/><g fill="#fff"><rect x="47.5" y="52" width="13.2" height="5" rx="2.5"/><rect x="63.1" y="52" width="13.2" height="5" rx="2.5"/></g><g stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M49.7 57 47.8 70.4M58.5 57l1.9 13.4M65.3 57l-1.9 13.4M74.1 57l1.9 13.4"/><path d="M50.6 65.8h7.1M66.2 65.8h7.1" stroke-width="2.1"/></g></symbol>
+  <defs><linearGradient id="bm" x1="0" x2="1"><stop offset="0" stop-color="#7da8ff" stop-opacity="0"/><stop offset=".5" stop-color="#7da8ff"/><stop offset="1" stop-color="#7da8ff" stop-opacity="0"/></linearGradient></defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="#fff"/><g stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2.2v2.4M12 19.4v2.4M2.2 12h2.4M19.4 12h2.4M5.1 5.1l1.7 1.7M17.2 17.2l1.7 1.7M5.1 18.9l1.7-1.7M17.2 6.8l1.7-1.7"/></g></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7.2 19h10a4.3 4.3 0 0 0 .7-8.5 6.3 6.3 0 0 0-12 1.4A3.6 3.6 0 0 0 7.2 19z" fill="#fff"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><g stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v19M3.8 7.25l16.4 9.5M3.8 16.75l16.4-9.5M9.5 3.8 12 6.2l2.5-2.4M9.5 20.2 12 17.8l2.5 2.4"/></g></symbol>
+  <symbol id="i-suncloud" viewBox="0 0 24 24"><circle cx="15.5" cy="8" r="3.6" fill="#fff"/><g stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M15.5 1.6v1.6M21.9 8h-1.6M20 3.5l-1.1 1.1M11 3.5l1.1 1.1"/></g><path d="M5.6 20.5h9.2a3.9 3.9 0 0 0 .6-7.7 5.8 5.8 0 0 0-11 1.3 3.3 3.3 0 0 0 1.2 6.4z" fill="#fff" stroke="#000" stroke-width="1.3"/></symbol>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo"><svg class="mark" width="26" height="26"><use href="#logo"/></svg><span>i<b>Land</b></span></a>
+    <ul>
+      <li><a href="#music">Music</a></li>
+      <li><a href="#weather">Weather</a></li>
+      <li><a href="#faceid">Face ID</a></li>
+      <li><a href="#looks">Looks</a></li>
+      <li><a href="#download">Download</a></li>
+    </ul>
+    <a class="btn tomato small" href="downloads/iLand.dmg" download>Download</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Your notch,<br><span class="thin">finally doing something.</span></h1>
+    <p class="lead">iLand turns the MacBook notch into a living island. Music, weather, battery and a Face ID-style unlock, right where the notch already is.</p>
+    <div class="ctas">
+      <a class="btn tomato" href="downloads/iLand.dmg" download><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>Download for Mac</a>
+      <a class="btn ghost" href="#music">See what it does</a>
+    </div>
+    <p class="fine">Free · Version 1.0.0 · macOS 13 or later · 1 MB</p>
+
+    <div class="mac" id="mac" aria-label="iLand running on a MacBook">
+      <div class="lid">
+        <div class="viewport" id="viewport">
+          <div class="display" id="display">
+            <!-- original abstract wallpaper -->
+            <svg class="wall" viewBox="0 0 1470 956" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="wbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1222"/><stop offset="1" stop-color="#05070d"/></linearGradient>
+                <linearGradient id="r1" x1="0" x2="1"><stop offset="0" stop-color="#1e4fd8"/><stop offset=".55" stop-color="#6a3cf0"/><stop offset="1" stop-color="#d0479e"/></linearGradient>
+                <linearGradient id="r2" x1="0" x2="1"><stop offset="0" stop-color="#0fb5c9"/><stop offset="1" stop-color="#2648c9"/></linearGradient>
+                <linearGradient id="r3" x1="1" x2="0"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#7a2bd8"/></linearGradient>
+                <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="38"/></filter>
+                <filter id="soft2"><feGaussianBlur stdDeviation="8"/></filter>
+              </defs>
+              <rect width="1470" height="956" fill="url(#wbg)"/>
+              <g filter="url(#soft)" opacity=".95">
+                <ellipse cx="260" cy="170" rx="420" ry="190" fill="#1d3fb8" opacity=".55"/>
+                <ellipse cx="1220" cy="250" rx="380" ry="200" fill="url(#r3)" opacity=".55"/>
+                <path d="M-120 560 C 240 360, 520 700, 860 480 S 1380 220, 1640 360 L 1640 1100 L -120 1100Z" fill="url(#r1)"/>
+                <path d="M-80 760 C 300 640, 640 860, 980 720 S 1420 640, 1600 740 L 1600 1100 L -80 1100Z" fill="url(#r2)" opacity=".75"/>
+              </g>
+              <g filter="url(#soft2)" opacity=".55">
+                <path d="M-40 500 C 300 320, 560 640, 900 440 S 1360 180, 1540 270" fill="none" stroke="#a9bdff" stroke-width="3"/>
+                <path d="M-40 540 C 320 380, 600 690, 940 490 S 1380 250, 1540 320" fill="none" stroke="#ff9fc6" stroke-width="2" opacity=".6"/>
+              </g>
+            </svg>
+
+            <!-- menu bar -->
+            <div class="mb">
+              <div class="mb-l"><b>Finder</b><span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span></div>
+              <div class="mb-r">
+                <svg viewBox="0 0 24 24" width="17"><path d="M3 9.5a13 13 0 0 1 18 0M6 13a8.5 8.5 0 0 1 12 0M9.2 16.4a4 4 0 0 1 5.6 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="19.6" r="1.6" fill="currentColor"/></svg>
+                <span class="mb-bat"><span class="mb-bat-num">64</span></span>
+                <svg viewBox="0 0 24 24" width="15"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 24 24" width="17"><rect x="2.5" y="4.5" width="19" height="6.5" rx="3.25" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.7" cy="7.75" r="2" fill="currentColor"/><rect x="2.5" y="13" width="19" height="6.5" rx="3.25" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="6.3" cy="16.25" r="2" fill="currentColor"/></svg>
+                <span class="mb-date" id="mbDate">Thu 12 Nov  9:41</span>
+              </div>
+            </div>
+
+            <!-- dock -->
+            <div class="dock">
+              <i style="background:linear-gradient(160deg,#5ac8fa,#1e6cf0)"><s class="g-face"></s></i>
+              <i style="background:linear-gradient(160deg,#ffffff,#d7dbe3)"><s class="g-compass"></s></i>
+              <i style="background:linear-gradient(160deg,#6ee7a8,#1fa86a)"><s class="g-bubble"></s></i>
+              <i style="background:linear-gradient(160deg,#ffd76a,#ff9f1a)"><s class="g-note"></s></i>
+              <i style="background:linear-gradient(160deg,#ff7aa8,#ff2d55)"><s class="g-music"></s></i>
+              <i style="background:linear-gradient(160deg,#8e8e93,#48484a)"><s class="g-gear"></s></i>
+              <b></b>
+              <i style="background:none;box-shadow:0 2px 6px rgba(0,0,0,.25)"><svg width="54" height="54"><use href="#logo"/></svg></i>
+              <i style="background:linear-gradient(160deg,#c7cbd3,#9aa0aa)"><s class="g-bin"></s></i>
+            </div>
+
+            <!-- lock screen -->
+            <div class="lock" id="lock">
+              <div class="lock-date" id="lockDate">Thursday 12 November</div>
+              <div class="lock-time" id="lockTime">9:41</div>
+              <div class="lock-user"><span class="avatar"></span><span>You</span><span class="pw">Enter Password</span></div>
+            </div>
+
+            <!-- the island -->
+            <div class="isl" id="isl">
+              <i class="ear l"></i><i class="ear r"></i>
+              <div class="clip">
+                <div class="layer" data-l="compact">
+                  <div class="wings"><span class="art art-a" style="width:18px;height:18px;border-radius:5px;margin-left:8px"></span><span class="wave" style="height:10px;margin-right:9px"><i></i><i></i><i></i><i></i></span></div>
+                </div>
+                <div class="layer" data-l="music">
+                  <div class="hdr"><span class="pdots"><i class="on"></i><i class=""></i></span></div>
+                  <div class="panel">
+                    <div class="row">
+                      <span class="art art-a" style="width:56px;height:56px;border-radius:14px"></span>
+                      <div style="flex:1;text-align:left;min-width:0"><div class="t1">Midnight Drive</div><div class="t2">Neon Coast</div></div>
+                      <span class="wave" style="height:18px"><i></i><i></i><i></i><i></i></span>
+                    </div>
+                    <div class="prog"><span id="tNow">1:18</span><div class="bar"><span id="tBar"></span></div><span>3:24</span></div>
+                    <div class="tray">
+                      <svg width="16" height="16" viewBox="0 0 24 24" class="dim"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      <svg width="23" height="23" viewBox="0 0 24 24"><path d="M11.2 6.2v11.6c0 .7-.8 1.1-1.3.7L2.6 12.7a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7zM21.4 6.2v11.6c0 .7-.8 1.1-1.3.7l-7.3-5.8a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7z"/></svg>
+                      <svg width="25" height="25" viewBox="0 0 24 24"><rect x="5.5" y="4" width="4.2" height="16" rx="1.3"/><rect x="14.3" y="4" width="4.2" height="16" rx="1.3"/></svg>
+                      <svg width="23" height="23" viewBox="0 0 24 24"><path d="M12.8 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4l-7.3-5.8c-.5-.4-1.3 0-1.3.7zM2.6 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4L3.9 5.5c-.5-.4-1.3 0-1.3.7z"/></svg>
+                      <svg width="19" height="19" viewBox="0 0 24 24" class="dim"><rect x="4" y="5" width="16" height="10.5" rx="1.6" fill="none" stroke-width="2"/><path d="M2 18.5h20" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="layer" data-l="weather">
+                  <div class="hdr"><span class="pdots"><i class=""></i><i class="on"></i></span></div>
+                  <div class="wx">
+                    <div class="top">
+                      <div style="text-align:left"><div class="city">Lisbon</div><div class="temp">22°</div></div>
+                      <div><svg width="28" height="28"><use href="#i-sun"/></svg><div class="uv">UV 6</div></div>
+                    </div>
+                    <div class="hours">
+                      <div><small>10</small><svg width="17" height="17"><use href="#i-sun"/></svg><b>22°</b></div>
+                      <div><small>11</small><svg width="17" height="17"><use href="#i-sun"/></svg><b>23°</b></div>
+                      <div><small>12</small><svg width="17" height="17"><use href="#i-sun"/></svg><b>24°</b></div>
+                      <div><small>13</small><svg width="17" height="17"><use href="#i-suncloud"/></svg><b>24°</b></div>
+                      <div><small>14</small><svg width="17" height="17"><use href="#i-suncloud"/></svg><b>23°</b></div>
+                      <div><small>15</small><svg width="17" height="17"><use href="#i-cloud"/></svg><b>22°</b></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="layer" data-l="watch">
+                  <div class="wings" style="padding:0 12px">
+                    <svg width="17" height="17" viewBox="0 0 64 64"><path d="M0 18V11Q0 0 11 0h7M46 0h7q11 0 11 11v7M64 46v7q0 11-11 11h-7M18 64h-7Q0 64 0 53v-7M21 23v6M43 23v6M32 23v14q0 2-4 2M22 45q10 7 20 0" fill="none" stroke="#8e8e93" stroke-width="6" stroke-linecap="round"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#8e8e93"><rect x="4" y="10" width="16" height="12" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#8e8e93" stroke-width="2.6"/></svg>
+                  </div>
+                </div>
+                <div class="layer" data-l="face">
+                  <div class="faceid" style="padding-top:52px">
+                    <svg class="glyph" id="heroGlyph" width="66" height="66" viewBox="0 0 64 64">
+                      <path class="corners" d="M0 18V11Q0 0 11 0h7M46 0h7q11 0 11 11v7M64 46v7q0 11-11 11h-7M18 64h-7Q0 64 0 53v-7"/>
+                      <path class="face" d="M21 23v6M43 23v6M32 23v14q0 2-4 2M22 45q10 7 20 0"/>
+                      <rect class="beam" x="4" y="2" width="56" height="3" rx="1.5" fill="url(#bm)"/>
+                      <circle class="ring" cx="32" cy="32" r="29"/>
+                      <path class="check" d="M19 33l9 9 17-19"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="cam" aria-hidden="true"></span>
+
+            <!-- pointer + trackpad swipe hint -->
+            <svg class="cursor" id="cur" width="22" height="30" viewBox="0 0 22 30" aria-hidden="true"><path d="M2 1.5v23.2l6.1-5.9 3.9 9.1 3.9-1.7-3.9-9h8.5z" fill="#000" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <div class="fingers" id="fingers" aria-hidden="true"><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="base"><span></span></div>
+    </div>
+    <div class="hero-cap">
+      <span id="cap">Idle: it's just the notch.</span>
+      <span class="steps" id="steps"></span>
+    </div>
+  </div>
+</header>
+
+<section id="music">
+  <div class="wrap split">
+    <div class="copy reveal">
+      <h2>Now playing,<br><span class="soft">right in the notch.</span></h2>
+      <p class="sub">Album art and a live waveform grow out of the notch while something plays. Hover to open the full player.</p>
+      <ul class="ticks">
+        <li>Works with anything in Now Playing: Spotify, Apple Music, YouTube and more</li>
+        <li>Draggable progress bar, shuffle, skip and play/pause</li>
+        <li>Switch output to AirPods or AirPlay from the notch</li>
+        <li>Waveform tinted from the album cover</li>
+      </ul>
+    </div>
+    <div class="stage reveal">
+      <div class="stage-mb"><span><b>Music</b> File Edit View</span><span>Thu 12 Nov</span></div>
+      <div class="isl open" style="width:400px;height:196px;border-radius:0 0 30px 30px;--e:14px">
+        <i class="ear l"></i><i class="ear r"></i>
+        <div class="clip"><div class="layer on">
+          <div class="hdr"><span class="pdots"><i class="on"></i><i class=""></i></span></div>
+          <div class="panel">
+            <div class="row">
+              <span class="art" style="width:56px;height:56px;border-radius:14px;background:radial-gradient(circle at 30% 30%,#c9fff2 0 10%,transparent 11%),linear-gradient(140deg,#3be2c3,#2a6cf5 55%,#141b4d)"></span>
+              <div style="flex:1;text-align:left;min-width:0"><div class="t1">Glass Hours</div><div class="t2">Paper Planets</div></div>
+              <span class="wave" style="height:18px"><i style="background:#6fd8ff"></i><i style="background:#6fd8ff"></i><i style="background:#6fd8ff"></i><i style="background:#6fd8ff"></i></span>
+            </div>
+            <div class="prog"><span>0:48</span><div class="bar"><span></span></div><span>2:40</span></div>
+            <div class="tray">
+              <svg width="16" height="16" viewBox="0 0 24 24" class="dim"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="23" height="23" viewBox="0 0 24 24"><path d="M11.2 6.2v11.6c0 .7-.8 1.1-1.3.7L2.6 12.7a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7zM21.4 6.2v11.6c0 .7-.8 1.1-1.3.7l-7.3-5.8a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7z"/></svg>
+              <svg width="25" height="25" viewBox="0 0 24 24"><rect x="5.5" y="4" width="4.2" height="16" rx="1.3"/><rect x="14.3" y="4" width="4.2" height="16" rx="1.3"/></svg>
+              <svg width="23" height="23" viewBox="0 0 24 24"><path d="M12.8 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4l-7.3-5.8c-.5-.4-1.3 0-1.3.7zM2.6 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4L3.9 5.5c-.5-.4-1.3 0-1.3.7z"/></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" class="dim"><rect x="4" y="5" width="16" height="10.5" rx="1.6" fill="none" stroke-width="2"/><path d="M2 18.5h20" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="weather">
+  <div class="wrap split rev">
+    <div class="copy reveal">
+      <h2>Swipe for<br><span class="soft">the sky.</span></h2>
+      <p class="sub">Two fingers across the open island and the weather slides in. Swipe back for your music.</p>
+      <ul class="ticks">
+        <li>Temperature, conditions and UV index</li>
+        <li>The next six hours at a glance</li>
+        <li>Free forecasts from Open-Meteo, no API key</li>
+        <li>Precise with Location, city-level without</li>
+      </ul>
+    </div>
+    <div class="stage reveal">
+      <div class="stage-mb"><span><b>Finder</b> File Edit View</span><span>Thu 12 Nov</span></div>
+      <div class="isl open" style="width:400px;height:196px;border-radius:0 0 30px 30px;--e:14px">
+        <i class="ear l"></i><i class="ear r"></i>
+        <div class="clip"><div class="layer on">
+          <div class="hdr"><span class="pdots"><i class=""></i><i class="on"></i></span></div>
+          <div class="wx">
+            <div class="top">
+              <div style="text-align:left"><div class="city">Reykjavík</div><div class="temp">1°</div></div>
+              <div><svg width="28" height="28"><use href="#i-cloud"/></svg><div class="uv">UV 0</div></div>
+            </div>
+            <div class="hours">
+              <div><small>05</small><svg width="17" height="17"><use href="#i-cloud"/></svg><b>1°</b></div><div><small>06</small><svg width="17" height="17"><use href="#i-cloud"/></svg><b>0°</b></div><div><small>07</small><svg width="17" height="17"><use href="#i-cloud"/></svg><b>0°</b></div><div><small>08</small><svg width="17" height="17"><use href="#i-snow"/></svg><b>0°</b></div><div><small>09</small><svg width="17" height="17"><use href="#i-snow"/></svg><b>0°</b></div><div><small>10</small><svg width="17" height="17"><use href="#i-cloud"/></svg><b>1°</b></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faceid">
+  <div class="wrap split">
+    <div class="copy reveal">
+      <h2><span class="nw">Walk away, it locks.</span><br><span class="soft nw">Sit down, you're in.</span></h2>
+      <p class="sub">iLand watches for you with the built-in camera. Leave and it locks; come back and it recognises you on the lock screen and signs you in.</p>
+      <ul class="ticks">
+        <li>Scan animation on the lock screen, right at the notch</li>
+        <li>Guided setup inside the island: the ring fills as you move your head</li>
+        <li>Calibrated matching across several frames, poor frames ignored</li>
+        <li>Runs fully on your Mac: a face fingerprint, never photos; password in your Keychain</li>
+      </ul>
+      <div class="warn">
+        <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z" fill="#fac254"/><path d="M12 7v6M12 16.5v.5" stroke="#1a1408" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <p><b>Convenience, not security.</b> A Mac camera can't see depth, so a good photo of you could fool it. Keep it off any Mac that holds anything you'd hate to lose.</p>
+      </div>
+    </div>
+    <div class="stage reveal" style="background:radial-gradient(80% 100% at 30% 100%,#2b3f6b,transparent 60%),radial-gradient(70% 90% at 90% 90%,#5b3366,transparent 60%),#0b0d14">
+      <div style="position:absolute;inset:auto 0 46px 0;text-align:center;color:rgba(255,255,255,.9)">
+        <div style="font-size:64px;font-weight:600;letter-spacing:-.02em;line-height:1">9:41</div>
+        <div style="font-size:15px;opacity:.75;margin-top:6px">Thursday, 12 November</div>
+      </div>
+      <div class="isl open" style="width:216px;height:160px;border-radius:0 0 34px 34px;--e:10px">
+        <i class="ear l"></i><i class="ear r"></i>
+        <div class="clip"><div class="layer on">
+          <div class="faceid" style="padding-top:52px">
+            <svg class="glyph" id="lockGlyph" width="66" height="66" viewBox="0 0 64 64">
+              <path class="corners" d="M0 18V11Q0 0 11 0h7M46 0h7q11 0 11 11v7M64 46v7q0 11-11 11h-7M18 64h-7Q0 64 0 53v-7"/>
+              <path class="face" d="M21 23v6M43 23v6M32 23v14q0 2-4 2M22 45q10 7 20 0"/>
+              <rect class="beam" x="4" y="2" width="56" height="3" rx="1.5" fill="url(#bm)"/>
+              <circle class="ring" cx="32" cy="32" r="29"/>
+              <path class="check" d="M19 33l9 9 17-19"/>
+            </svg>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="looks">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>Pitch black, glass,<br><span class="soft">or tomato red.</span></h2>
+      <p class="sub">Pick one in the welcome tour or any time from the right-click menu.</p>
+    </div>
+    <div class="looks">
+      <div class="look reveal">
+        <div class="pic"><div class="isl lk"><i class="ear l"></i><i class="ear r"></i><div class="clip"><div class="lk-in">
+          <div class="row"><span class="art art-a" style="width:40px;height:40px;border-radius:10px"></span><div style="flex:1;text-align:left;min-width:0"><div class="t1" style="font-size:13.5px">Midnight Drive</div><div class="t2" style="font-size:12px">Neon Coast</div></div><span class="wave" style="height:14px"><i></i><i></i><i></i><i></i></span></div>
+          <div class="lk-tray"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M11.2 6.2v11.6c0 .7-.8 1.1-1.3.7L2.6 12.7a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7zM21.4 6.2v11.6c0 .7-.8 1.1-1.3.7l-7.3-5.8a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7z"/></svg><svg width="19" height="19" viewBox="0 0 24 24"><rect x="5.5" y="4" width="4.2" height="16" rx="1.3"/><rect x="14.3" y="4" width="4.2" height="16" rx="1.3"/></svg><svg width="17" height="17" viewBox="0 0 24 24"><path d="M12.8 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4l-7.3-5.8c-.5-.4-1.3 0-1.3.7zM2.6 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4L3.9 5.5c-.5-.4-1.3 0-1.3.7z"/></svg></div>
+        </div></div></div></div>
+        <div class="meta"><h3>Pitch Black</h3><p>Pure black that melts into the notch.</p></div>
+      </div>
+      <div class="look glass reveal">
+        <div class="pic"><div class="isl lk"><i class="ear l"></i><i class="ear r"></i><div class="clip"><div class="lk-in">
+          <div class="row"><span class="art art-a" style="width:40px;height:40px;border-radius:10px"></span><div style="flex:1;text-align:left;min-width:0"><div class="t1" style="font-size:13.5px">Midnight Drive</div><div class="t2" style="font-size:12px">Neon Coast</div></div><span class="wave" style="height:14px"><i></i><i></i><i></i><i></i></span></div>
+          <div class="lk-tray"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M11.2 6.2v11.6c0 .7-.8 1.1-1.3.7L2.6 12.7a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7zM21.4 6.2v11.6c0 .7-.8 1.1-1.3.7l-7.3-5.8a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7z"/></svg><svg width="19" height="19" viewBox="0 0 24 24"><rect x="5.5" y="4" width="4.2" height="16" rx="1.3"/><rect x="14.3" y="4" width="4.2" height="16" rx="1.3"/></svg><svg width="17" height="17" viewBox="0 0 24 24"><path d="M12.8 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4l-7.3-5.8c-.5-.4-1.3 0-1.3.7zM2.6 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4L3.9 5.5c-.5-.4-1.3 0-1.3.7z"/></svg></div>
+        </div></div></div></div>
+        <div class="meta"><h3>Liquid Glass</h3><p>Black at the notch, fading into clear glass. macOS 26+.</p></div>
+      </div>
+      <div class="look tomato reveal">
+        <div class="pic"><div class="isl lk"><i class="ear l"></i><i class="ear r"></i><div class="clip"><div class="lk-in">
+          <div class="row"><span class="art art-a" style="width:40px;height:40px;border-radius:10px"></span><div style="flex:1;text-align:left;min-width:0"><div class="t1" style="font-size:13.5px">Midnight Drive</div><div class="t2" style="font-size:12px">Neon Coast</div></div><span class="wave wave-w" style="height:14px"><i></i><i></i><i></i><i></i></span></div>
+          <div class="lk-tray"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M11.2 6.2v11.6c0 .7-.8 1.1-1.3.7L2.6 12.7a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7zM21.4 6.2v11.6c0 .7-.8 1.1-1.3.7l-7.3-5.8a.9.9 0 0 1 0-1.4l7.3-5.8c.5-.4 1.3 0 1.3.7z"/></svg><svg width="19" height="19" viewBox="0 0 24 24"><rect x="5.5" y="4" width="4.2" height="16" rx="1.3"/><rect x="14.3" y="4" width="4.2" height="16" rx="1.3"/></svg><svg width="17" height="17" viewBox="0 0 24 24"><path d="M12.8 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4l-7.3-5.8c-.5-.4-1.3 0-1.3.7zM2.6 6.2v11.6c0 .7.8 1.1 1.3.7l7.3-5.8a.9.9 0 0 0 0-1.4L3.9 5.5c-.5-.4-1.3 0-1.3.7z"/></svg></div>
+        </div></div></div></div>
+        <div class="meta"><h3>Tomato</h3><p>iLand's own red, straight from the logo.</p></div>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2"/><path d="M11 9l-2 3h4l-2 3"/></svg></div><h3>Charging</h3><p>Plug in and the wings flash a bolt and your battery level.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9z"/></svg></div><h3>Springy</h3><p>Every change springs, blurs and settles. A trackpad tap when it opens.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7L21 11z"/></svg></div><h3>Out of the way</h3><p>Click-through everywhere except the island itself. Invisible when idle.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center">
+      <svg width="96" height="96" style="filter:drop-shadow(0 18px 40px rgba(214,26,25,.35))"><use href="#logo"/></svg>
+      <h2 style="margin-top:22px">Get iLand.</h2>
+      <p class="sub" style="margin:16px auto 0">Free for your Mac. Version 1.0.0, about 1 MB.</p>
+      <div style="margin-top:28px"><a class="btn tomato big" href="downloads/iLand.dmg" download><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>Download for Mac</a></div>
+      <p class="fine">Requires macOS 13 or later. Liquid Glass needs macOS 26.</p>
+    </div>
+    <div class="grid g3 install">
+      <div class="card reveal"><div class="num">1</div><h3>Drag to Applications</h3><p>Open <b>iLand.dmg</b> and drag iLand onto the Applications folder.</p></div>
+      <div class="card reveal"><div class="num">2</div><h3>Allow it once</h3><p>macOS asks to verify apps from outside the App Store. Open iLand, then go to <b>System Settings → Privacy &amp; Security</b> and click <b>Open Anyway</b>.</p></div>
+      <div class="card reveal"><div class="num">3</div><h3>Look at your notch</h3><p>The welcome tour plays in the notch. Right-click the island any time for styles, Face ID and more.</p></div>
+    </div>
+    <div class="grid g2">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div><h3>Private</h3><p>No accounts, analytics or servers of its own. Face data and your password never leave your Mac.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div><h3>Light</h3><p>A native Swift app, about 1 MB. Sits in the notch, nowhere else: no Dock icon, no menu bar clutter.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-l"><span class="logo"><svg class="mark" width="20" height="20"><use href="#logo"/></svg><span>i<b>Land</b></span></span><span class="sep"></span><span>made by <a href="https://dvnny.no" style="color:var(--fg)">dvnny.no</a></span></div>
+    <div><a href="downloads/iLand.dmg" download>Download iLand 1.0.0</a></div>
+  </div>
+</footer>
+
+<script>
+// ---------- Hero: a MacBook running iLand ----------
+const viewport = document.getElementById('viewport'), display = document.getElementById('display');
+function fit(){ const k = viewport.clientWidth / 1470; display.style.transform = `scale(${k})`; viewport.style.height = (956 * k) + 'px'; }
+addEventListener('resize', fit); fit();
+
+const isl = document.getElementById('isl'), cap = document.getElementById('cap'), cur = document.getElementById('cur');
+const lock = document.getElementById('lock'), fingers = document.getElementById('fingers'), glyph = document.getElementById('heroGlyph');
+const NOTCH = {w:196, h:32};
+const S = { // island geometry copied from the app (Geometry.swift / LockIsland.swift)
+  idle:    {w:NOTCH.w,       h:NOTCH.h,       r:'0 0 12px 12px', e:6},
+  compact: {w:NOTCH.w + 68,  h:NOTCH.h,       r:'0 0 12px 12px', e:6,  l:'compact'},
+  music:   {w:400,           h:NOTCH.h + 164, r:'0 0 30px 30px', e:14, l:'music', open:true},
+  weather: {w:400,           h:NOTCH.h + 164, r:'0 0 30px 30px', e:14, l:'weather', open:true},
+  watch:   {w:NOTCH.w + 76,  h:NOTCH.h,       r:'0 0 12px 12px', e:6,  l:'watch'},
+  face:    {w:216,           h:NOTCH.h + 128, r:'0 0 34px 34px', e:10, l:'face', open:true},
+};
+function island(k){
+  const m = S[k];
+  isl.style.width = m.w + 'px'; isl.style.height = m.h + 'px'; isl.style.borderRadius = m.r;
+  isl.style.setProperty('--e', m.e + 'px');
+  isl.classList.toggle('open', !!m.open);
+  isl.querySelectorAll('.layer').forEach(el => el.classList.toggle('on', el.dataset.l === m.l));
+}
+function pointer(x, y, hide){ cur.style.left = x + 'px'; cur.style.top = y + 'px'; cur.classList.toggle('hide', !!hide); }
+function say(t){ cap.style.opacity = 0; setTimeout(() => { cap.textContent = t; cap.style.opacity = 1; }, 200); }
+
+// progress bar that actually ticks
+let elapsed = 78, ticking = false;
+const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+setInterval(() => { if (!ticking) return; elapsed = elapsed >= 204 ? 0 : elapsed + 1;
+  document.getElementById('tNow').textContent = fmt(elapsed);
+  document.getElementById('tBar').style.width = (elapsed / 204 * 100) + '%'; }, 1000);
+
+const steps = [
+  {t:2000, c:"Idle: it's just the notch.",                           f(){ island('idle'); pointer(1080,560); }},
+  {t:2400, c:'Something plays: art and a waveform grow out of the notch.', f(){ island('compact'); ticking = true; }},
+  {t:1000, c:'Point at the notch…',                                  f(){ pointer(745,14); }},
+  {t:3800, c:'…and the full player opens.',                          f(){ island('music'); }},
+  {t:3200, c:'Two-finger swipe: the weather.',                       f(){ fingers.classList.remove('go'); void fingers.offsetWidth; fingers.classList.add('go'); setTimeout(() => island('weather'), 450); }},
+  {t:1700, c:'Move away and it tucks back in.',                      f(){ pointer(1010,430); island('compact'); }},
+  {t:1500, c:'Lock your Mac…',                                       f(){ lock.classList.add('on'); pointer(1010,430,true); island('watch'); ticking = false; }},
+  {t:2300, c:'…Face ID looks for you on the lock screen…',           f(){ glyph.classList.remove('ok'); island('face'); }},
+  {t:1500, c:"…and you're in.",                                      f(){ glyph.classList.add('ok'); }},
+  {t:1400, c:'Back to your desktop.',                                f(){ lock.classList.remove('on'); island('compact'); pointer(1080,560); ticking = true; }},
+];
+const dots = document.getElementById('steps');
+steps.forEach(() => dots.appendChild(document.createElement('i')));
+let n = 0;
+function run(){
+  const st = steps[n]; st.f(); say(st.c);
+  [...dots.children].forEach((d, i) => d.classList.toggle('on', i === n));
+  n = (n + 1) % steps.length; setTimeout(run, st.t);
+}
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) { island('music'); say('Hover: the full player opens.'); }
+else run();
+
+// Lock-screen demo glyph in the Face ID section: scan, then check, repeat.
+const lg = document.getElementById('lockGlyph');
+setInterval(() => { lg.classList.add('ok'); setTimeout(() => lg.classList.remove('ok'), 1600); }, 4200);
+
+// Real date and time in the menu bar and on the lock screen.
+function clock(){
+  const d = new Date();
+  const t = d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+  document.getElementById('mbDate').textContent = d.toLocaleDateString([], {weekday:'short', day:'numeric', month:'short'}).replace(',', '') + '  ' + t;
+  document.getElementById('lockTime').textContent = t.replace(/\s?[AP]M/i, '');
+  document.getElementById('lockDate').textContent = d.toLocaleDateString([], {weekday:'long', day:'numeric', month:'long'}).replace(',', '');
+}
+clock(); setInterval(clock, 15000);
+
+
+// Reveal on scroll.
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
