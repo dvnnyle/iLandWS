@@ -313,12 +313,16 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:2
 footer a:hover{color:var(--fg)}
 
 .nw{white-space:nowrap}
+.g4{grid-template-columns:repeat(4,1fr)}
+.new-sub{font-size:20px;letter-spacing:-.01em;margin-top:56px;color:var(--fg)}
+.new-sub+.grid{margin-top:20px}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
 .reveal.in{opacity:1;transform:none}
 
 @media (max-width:860px){
   nav ul{display:none}
   .g3,.g2,.looks{grid-template-columns:1fr}
+  .g4{grid-template-columns:1fr 1fr}
   .split,.split.rev{grid-template-columns:1fr;gap:28px}
   .split.rev .copy{order:0}
   section{padding:80px 0}
@@ -638,6 +642,13 @@ footer a:hover{color:var(--fg)}
         <h3>Settings</h3>
         <p>One place for styles, music, weather units, the shelf, the lock screen and Face ID, including how strict it is.</p>
       </div>
+    </div>
+    <h3 class="new-sub reveal">Also new in 1.1.3</h3>
+    <div class="grid g4">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 12h14M5 12a2 2 0 0 1-2-2V8M19 12a2 2 0 0 0 2-2V8"/><path d="M8 16h8"/></svg></div><h3>Space to pause</h3><p>Hover the player and press Space to play or pause, without leaving what you're doing.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 8v8M20 6v12"/></svg></div><h3>Swipe for volume</h3><p>Two fingers up or down on the open island, with a slim volume bar.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M10 9l5 3-5 3z"/></svg></div><h3>Tap the cover</h3><p>Click the album art to jump straight to Spotify, Music or your browser.</p></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 15a6 6 0 0 1 12 0v2H6z"/><path d="M12 5v2M10 20h4"/></svg></div><h3>Unlock chime</h3><p>A soft ding when Face ID recognises you, and a faster sign-in.</p></div>
     </div>
   </div>
 </section>
